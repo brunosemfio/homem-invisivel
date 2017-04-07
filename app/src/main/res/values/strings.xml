@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Menino do Acre</string>
+    <string name="txt_intro_title">Encontre o Menino do Acre</string>
+    <string name="txt_intro_explanation">Lembra da brincadeira do Quente ou Frio? Aqui funciona da mesma forma. Você tem algumas chances para encontrá-lo antes que ele suma para sempre.</string>
+    <string name="txt_intro_start">Começar</string>
+    <string name="txt_main_too_hot">muito quente</string>
+    <string name="txt_main_hot">quente</string>
+    <string name="txt_main_cold">frio</string>
+    <string name="txt_main_too_cold">muito frio</string>
+    <string name="txt_main_tip" formatted="false">O menino está localizado no canto %s %s. Boa sorte ;)</string>
+    <string name="txt_main_explanation">Toque em qualquer parte da tela para procurar o Menino do Acre.</string>
+    <string name="txt_finished_found">Você achou o Menino do Acre</string>
+    <string name="txt_finished_hits">Você conseguiu encontrá-lo com %d toque(s). Parabéns explorador #SQN</string>
+    <string name="txt_finished_not_found">Ixi, ele foi embora =/</string>
+    <string name="txt_finished_none_hits">Você não conseguiu encontrá-lo.</string>
+    <string name="txt_finished_play_again">Jogar novamente</string>
+    <string name="txt_finished_share">Compartilhar</string>
+</resources>
