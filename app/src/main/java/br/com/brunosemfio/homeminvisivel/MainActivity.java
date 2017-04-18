@@ -11,10 +11,15 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import java.util.Random;
 
@@ -28,13 +33,13 @@ public class MainActivity extends AppCompatActivity {
 
     private int totalHits = 0;
 
+    private boolean found;
+
     private MaxSize maxSize;
 
     private double maxDistance;
 
-    private double randomX;
-
-    private double randomY;
+    private double randomX, randomY;
 
     private TextView hits, tip, explanation;
 
@@ -44,8 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
     private SoundPool soundPool;
 
-    private int soundPoolPop;
-    private int soundPoolToasty;
+    private int soundPoolPop, soundPoolToasty;
+
+    private InterstitialAd interstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
         setupScreen();
 
         initSoundPool();
+
+        setupAd();
 
         showStatueWhen = new Random().nextInt(7) + 3;
     }
@@ -108,6 +116,29 @@ public class MainActivity extends AppCompatActivity {
         soundPoolToasty = soundPool.load(this, R.raw.toasty, 1);
     }
 
+    private void setupAd() {
+
+        final AdRequest request = new AdRequest.Builder().build();
+
+        interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId("ca-app-pub-1502214236956122/1274212290");
+        interstitialAd.loadAd(request);
+        interstitialAd.setAdListener(new AdListener() {
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+
+                Log.v(MainActivity.class.getSimpleName(), "Não foi possível carregar o anúncio");
+            }
+
+            @Override
+            public void onAdClosed() {
+
+                finishGame();
+            }
+        });
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -117,13 +148,15 @@ public class MainActivity extends AppCompatActivity {
 
             explanation.setVisibility(View.GONE);
 
-            totalHits += 1;
-
             final double distance = Math.hypot(randomX - event.getX(), randomY - event.getY());
 
             final float proportion = (float) (distance / maxDistance);
 
-            checkHit(distance);
+            totalHits += 1;
+
+            found = distance <= TOLERANCE;
+
+            checkHit();
 
             changeBgColor(proportion);
 
@@ -182,18 +215,31 @@ public class MainActivity extends AppCompatActivity {
         return getString(R.string.txt_main_tip, s1, s2);
     }
 
-    private void checkHit(double distance) {
+    private void checkHit() {
 
-        if (hitsRemains > 0 && distance > TOLERANCE) {
+        if (hitsRemains > 1 && !found) {
 
             hitsRemains -= 1;
 
             return;
         }
 
+        if (interstitialAd.isLoaded()) {
+
+            interstitialAd.show();
+
+        } else {
+
+            finishGame();
+        }
+
+    }
+
+    private void finishGame() {
+
         final Intent intent = new Intent(this, FinishedActivity.class);
-        intent.putExtra(FinishedActivity.FOUND, distance <= TOLERANCE);
         intent.putExtra(FinishedActivity.HITS, totalHits);
+        intent.putExtra(FinishedActivity.FOUND, found);
 
         startActivity(intent);
 
@@ -226,6 +272,14 @@ public class MainActivity extends AppCompatActivity {
 
             tip.setText(R.string.txt_main_too_cold);
         }
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+
+        GAUtils.setScreenName(this, "Principal");
     }
 
     @Override

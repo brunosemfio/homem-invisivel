@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "787027370080",
+    "project_id": "menino-do-acre"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:787027370080:android:31e71c7d7110782c",
+        "android_client_info": {
+          "package_name": "br.com.brunosemfio.homeminvisivel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxs9GCozKi0RRYgVp0vvdZ0vKkkKSFd60"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-96999201-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -24,4 +24,12 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+
+        GAUtils.setScreenName(this, "Intro");
+    }
 }

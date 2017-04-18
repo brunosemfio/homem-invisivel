@@ -53,4 +53,12 @@ public class FinishedActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+
+        GAUtils.setScreenName(this, "Final");
+    }
 }
